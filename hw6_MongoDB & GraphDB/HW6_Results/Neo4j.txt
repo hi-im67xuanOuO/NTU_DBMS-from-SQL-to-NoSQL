@@ -1,0 +1,131 @@
+############# Open Neo4j #############
+
+Last login: Thu May 26 23:27:57 on ttys000
+liuqingxuan@liuqinguandeAir ~ % cd /Users/liuqingxuan/neo4j-community-4.2.17/bin
+liuqingxuan@liuqinguandeAir bin % ./neo4j start
+Directories in use:
+  home:         /Users/liuqingxuan/neo4j-community-4.2.17
+  config:       /Users/liuqingxuan/neo4j-community-4.2.17/conf
+  logs:         /Users/liuqingxuan/neo4j-community-4.2.17/logs
+  plugins:      /Users/liuqingxuan/neo4j-community-4.2.17/plugins
+  import:       /Users/liuqingxuan/neo4j-community-4.2.17/import
+  data:         /Users/liuqingxuan/neo4j-community-4.2.17/data
+  certificates: /Users/liuqingxuan/neo4j-community-4.2.17/certificates
+  run:          /Users/liuqingxuan/neo4j-community-4.2.17/run
+Starting Neo4j.
+Started neo4j (pid 896). It is available at http://localhost:7474/
+There may be a short delay until the server is ready.
+See /Users/liuqingxuan/neo4j-community-4.2.17/logs/neo4j.log for current status.
+liuqingxuan@liuqinguandeAir bin % sudo chown neo4j:adm /Users/liuqingxuan/hw6_student_list.csv 
+
+Password:
+liuqingxuan@liuqinguandeAir bin % ./neo4j stop                                                 
+Stopping Neo4j....... stopped
+liuqingxuan@liuqinguandeAir bin % 
+
+
+
+
+############# Part 2 #############
+
+## 2-1
+:use Neo4j
+
+LOAD CSV FROM 'file:///hw6_student_list.csv' AS line
+CREATE (:student {年級: toInteger(line[2]), 系所: line[1], 姓名: line[4], 學號: line[3], 身份: line[0]})
+
+MATCH (n:student{姓名:'姓名'}) delete n
+
+MATCH (n:student) RETURN n
+
+
+
+## 2-2
+MATCH
+  (a:student),
+  (b:student)
+WHERE a.`系所` = '資料科學學程' AND a.`年級` = 1 AND 
+      b.`系所` = '資料科學學程' AND b.`年級` = 1 AND
+      a.`姓名` <> b.`姓名`
+CREATE (a)-[r:peer]->(b)
+RETURN b, type(r)
+
+
+
+## 2-3
+MATCH (s:student)-[rels:peer]->(steps)
+RETURN s
+
+
+
+
+
+############# Part 3 #############
+
+
+## 3-1
+LOAD CSV FROM 'file:///hw6_hobbies.csv' AS line
+CREATE (:hobby {學號: line[0], 姓名: line[1], hobby1: line[2], hobby2: line[3], hobby3: line[4], hobby4: line[5], hobby5: line[6]})
+
+MATCH (n:hobby{姓名:'姓名'}) delete n
+
+MATCH (a:hobby)
+WHERE a.`hobby1` = '無' OR a.`hobby2` = '無' OR a.`hobby3` = '無' 
+      OR a.`hobby4` = '無' OR a.`hobby5` = '無' 
+Delete a
+
+MATCH (n:hobby) RETURN n
+
+
+MATCH
+  (a:hobby{姓名:'劉謦瑄'}),
+  (b:hobby)
+WHERE b.hobby1 = 'Watch movies' OR b.hobby2 = 'Watch movies' OR b.hobby3 = 'Watch movies' OR b.hobby4 = 'Watch movies' OR b.hobby5 = 'Watch movies' OR b.hobby1 = 'eating' OR b.hobby2 = 'eating' OR b.hobby3 = 'eating' OR b.hobby4 = 'eating' OR b.hobby5 = 'eating' OR b.hobby1 = 'play video game' OR b.hobby2 = 'play video game' OR b.hobby3 = 'play video game' OR b.hobby4 = 'play video game' OR b.hobby5 = 'play video game' OR b.hobby1 = 'basketball' OR b.hobby2 = 'basketball' OR b.hobby3 = 'basketball' OR b.hobby4 = 'basketball' OR b.hobby5 = 'basketball' OR b.hobby1 = 'badminton' OR b.hobby2 = 'badminton' OR b.hobby3 = 'badminton' OR b.hobby4 = 'badminton' OR b.hobby5 = 'badminton' AND b.`姓名`<>'劉謦瑄'
+CREATE (a)-[r:hobbyfriends]->(b)
+RETURN b, type(r)
+
+
+
+
+MATCH (n:hobby) , (b:hobby)
+MATCH  (n)-[:hobbyfriends]-(m) 
+WHERE NOT (m)-[:hobbyfriends]-(b) AND 
+(b.hobby1 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] OR
+b.hobby2 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] OR
+b.hobby3 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] OR
+b.hobby4 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] OR
+b.hobby5 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5]) AND
+(NOT b.hobby1 in ['Watch movies','eating','play video game','basketball','Badminton' ] OR NOT b.hobby2 in ['Watch movies','eating','play video game','basketball','Badminton' ] OR NOT b.hobby3 in ['Watch movies','eating','play video game','basketball','Badminton' ] OR NOT b.hobby4 in ['Watch movies','eating','play video game','basketball','Badminton' ] OR NOT b.hobby5 in ['Watch movies','eating','play video game','basketball','Badminton' ]) AND b.`姓名`<>'劉謦瑄'
+CREATE (m)-[r:foaf]->(b)
+RETURN b.`姓名`, type(r)
+
+
+
+
+
+## 3-2
+MATCH (m:hobby) , (b:hobby)
+MATCH  (m)-[:foaf]-(b) 
+WHERE NOT (m)-[:hobbyfriends]-(b)
+SET (CASE WHEN b.hobby1 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).same = b.hobby1
+SET (CASE WHEN b.hobby2 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).same = b.hobby2
+SET (CASE WHEN b.hobby3 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).same = b.hobby3
+SET (CASE WHEN b.hobby4 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).same = b.hobby4
+SET (CASE WHEN b.hobby5 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).same = b.hobby5
+RETURN b.`姓名`, b.same
+
+
+
+
+
+
+## 3-3
+MATCH (m:hobby) , (b:hobby)
+MATCH  (m)-[:foaf]-(b) 
+WHERE NOT (m)-[:hobbyfriends]-(b)
+SET (CASE WHEN NOT b.hobby1 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).notsame = b.hobby1
+SET (CASE WHEN NOT b.hobby2 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).notsame = b.hobby2
+SET (CASE WHEN NOT b.hobby3 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).notsame = b.hobby3
+SET (CASE WHEN NOT b.hobby4 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).notsame = b.hobby4
+SET (CASE WHEN NOT b.hobby5 in [m.hobby1, m.hobby2, m.hobby3, m.hobby4, m.hobby5] THEN b END).notsame = b.hobby5
+RETURN b.notsame

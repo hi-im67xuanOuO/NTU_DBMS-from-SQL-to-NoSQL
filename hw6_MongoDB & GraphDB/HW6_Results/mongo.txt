@@ -1,0 +1,292 @@
+## 1-1
+
+Last login: Thu May 26 01:14:56 on ttys000
+liuqingxuan@liuqinguandeAir ~ % cd /Users/liuqingxuan/mongodb-osx-x86_64-3.6.23/bin
+liuqingxuan@liuqinguandeAir bin % mongo
+MongoDB shell version v3.6.23
+connecting to: mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("0d4d7f88-4f2e-47ba-87f0-79529de3bb44") }
+MongoDB server version: 3.6.23
+Server has startup warnings: 
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] 
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] 
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> use mydb
+switched to db mydb
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+> mydb.createCollection("student")
+2022-05-26T01:47:22.935+0800 E QUERY    [thread1] ReferenceError: mydb is not defined :
+@(shell):1:1
+> db
+mydb
+> db.createCollection("student")
+{ "ok" : 1 }
+> show collections
+student
+> exit
+bye
+liuqingxuan@liuqinguandeAir bin % mongoimport --db=mydb --collection=student --type=csv --headerline --file=/Users/liuqingxuan/Downloads/DB_hw6/hw6_student_list.csv
+2022-05-26T01:49:34.454+0800	connected to: mongodb://localhost/
+2022-05-26T01:49:34.466+0800	50 document(s) imported successfully. 0 document(s) failed to import.
+liuqingxuan@liuqinguandeAir bin % mongo
+MongoDB shell version v3.6.23
+connecting to: mongodb://127.0.0.1:27017/?gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("2e624a95-bab9-437b-a7c6-ccbd5c81dc22") }
+MongoDB server version: 3.6.23
+Server has startup warnings: 
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] 
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-05-26T01:15:40.513+0800 I CONTROL  [initandlisten] 
+> db.student.find().pretty()
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+mydb    0.000GB
+> use mydb
+switched to db mydb
+> db.student.find().pretty()
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4ec"),
+	"身份" : "校內生",
+	"系所" : "土木系結構組",
+	"年級" : 1,
+	"學號" : "r10521219",
+	"姓名" : "丁治鈞"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4ed"),
+	"身份" : "校內生",
+	"系所" : "資料科學學程",
+	"年級" : 1,
+	"學號" : "r10946013",
+	"姓名" : "劉謦瑄"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4ee"),
+	"身份" : "校內生",
+	"系所" : "生醫電資所",
+	"年級" : 2,
+	"學號" : "r09945024",
+	"姓名" : "余銘仁"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4ef"),
+	"身份" : "校內生",
+	"系所" : "電機系",
+	"年級" : 4,
+	"學號" : "b04901126",
+	"姓名" : "卓冠宇"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f0"),
+	"身份" : "校內生",
+	"系所" : "資工系",
+	"年級" : 3,
+	"學號" : "b08902023",
+	"姓名" : "吳懷兟"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f1"),
+	"身份" : "校內生",
+	"系所" : "電機系",
+	"年級" : 3,
+	"學號" : "b08901158",
+	"姓名" : "吳詩昀"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f2"),
+	"身份" : "校內生",
+	"系所" : "資管系",
+	"年級" : 1,
+	"學號" : "r10725035",
+	"姓名" : "呂文楷"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f3"),
+	"身份" : "校內生",
+	"系所" : "電機資安碩班",
+	"年級" : 1,
+	"學號" : "r10921a01",
+	"姓名" : "劉品枘"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f4"),
+	"身份" : "校內生",
+	"系所" : "農藝系生統組",
+	"年級" : 1,
+	"學號" : "r10621203",
+	"姓名" : "何善學"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f5"),
+	"身份" : "校內生",
+	"系所" : "地質系",
+	"年級" : 4,
+	"學號" : "b06204008",
+	"姓名" : "周柏頤"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f6"),
+	"身份" : "校內生",
+	"系所" : "化學系",
+	"年級" : 4,
+	"學號" : "b07203064",
+	"姓名" : "廖哲賢"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f7"),
+	"身份" : "校內生",
+	"系所" : "心理系",
+	"年級" : 4,
+	"學號" : "b07207063",
+	"姓名" : "廖政華"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f8"),
+	"身份" : "校內生",
+	"系所" : "電機系",
+	"年級" : 1,
+	"學號" : "r10921013",
+	"姓名" : "張鑫揚"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4f9"),
+	"身份" : "校內生",
+	"系所" : "資工系",
+	"年級" : 1,
+	"學號" : "r10922195",
+	"姓名" : "徐浩宇"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4fa"),
+	"身份" : "校內生",
+	"系所" : "工科海洋系",
+	"年級" : 2,
+	"學號" : "r08525068",
+	"姓名" : "張書瑄"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4fb"),
+	"身份" : "校內生",
+	"系所" : "資料科學學程",
+	"年級" : 1,
+	"學號" : "r10946001",
+	"姓名" : "李奕宏"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4fc"),
+	"身份" : "校內生",
+	"系所" : "資工系",
+	"年級" : 3,
+	"學號" : "b08902011",
+	"姓名" : "杜展廷"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4fd"),
+	"身份" : "校內生",
+	"系所" : "生機系",
+	"年級" : 1,
+	"學號" : "r10631025",
+	"姓名" : "林承濬"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4fe"),
+	"身份" : "校內生",
+	"系所" : "生物機電系",
+	"年級" : 4,
+	"學號" : "b07611038",
+	"姓名" : "梁化達"
+}
+{
+	"_id" : ObjectId("628e6c2e85e685a715eec4ff"),
+	"身份" : "校內生",
+	"系所" : "經濟系",
+	"年級" : 1,
+	"學號" : "r10323003",
+	"姓名" : "楊于晨"
+}
+Type "it" for more
+> 
+
+
+
+
+
+
+
+## 1-2
+> db.student.find( { 系所: "資料科學學程", 年級: { $eq: 1 } , 姓名: { $nin: ["劉謦瑄"] } } )
+{ "_id" : ObjectId("628e6c2e85e685a715eec4fb"), "身份" : "校內生", "系所" : "資料科學學程", "年級" : 1, "學號" : "r10946001", "姓名" : "李奕宏" }
+> 
+
+
+
+## 1-3
+> db.student.aggregate( [ {  $group: {_id:"$系所", count:{ $sum:1 } } }, {  $sort: { count:-1, _id: 1 } } ])
+{ "_id" : "電機系", "count" : 10 }
+{ "_id" : "生機系", "count" : 6 }
+{ "_id" : "資工系", "count" : 5 }
+{ "_id" : "資管系", "count" : 4 }
+{ "_id" : "工科海洋系", "count" : 3 }
+{ "_id" : "生物機電系", "count" : 3 }
+{ "_id" : "資料科學學程", "count" : 3 }
+{ "_id" : "土木系水利組", "count" : 2 }
+{ "_id" : "農藝系生統組", "count" : 2 }
+{ "_id" : "電信所", "count" : 2 }
+{ "_id" : "化學系", "count" : 1 }
+{ "_id" : "土木系結構組", "count" : 1 }
+{ "_id" : "地質系", "count" : 1 }
+{ "_id" : "基蛋所", "count" : 1 }
+{ "_id" : "心理系", "count" : 1 }
+{ "_id" : "生工系", "count" : 1 }
+{ "_id" : "生醫電資所", "count" : 1 }
+{ "_id" : "經濟系", "count" : 1 }
+{ "_id" : "財金系", "count" : 1 }
+{ "_id" : "電機資安碩班", "count" : 1 }
+> 
+
+
+
+# 1-4
+> db.student.updateMany({}, {$set:{加入日期: "2022-03-01"}})
+{ "acknowledged" : true, "matchedCount" : 50, "modifiedCount" : 50 }
+> db.student.find( { 系所: "資料科學學程", 年級: { $eq: 1 } } )
+{ "_id" : ObjectId("628e6c2e85e685a715eec4ed"), "身份" : "校內生", "系所" : "資料科學學程", "年級" : 1, "學號" : "r10946013", "姓名" : "劉謦瑄", "加入日期" : "2022-03-01" }
+{ "_id" : ObjectId("628e6c2e85e685a715eec4fb"), "身份" : "校內生", "系所" : "資料科學學程", "年級" : 1, "學號" : "r10946001", "姓名" : "李奕宏", "加入日期" : "2022-03-01" }
+> 
+
+
+
+# 1-5
+> db.student.insertMany([
+...    { 加入日期: "2022-06-02", 身份: "旁聽生", 系所: "歷史系", 年級: 1, 學號: "b09900201", 姓名: "小花" },
+...    { 加入日期: "2022-06-02", 身份: "校內生", 系所: "歷史系", 年級: 4, 學號: "b06900332", 姓名: "小草" },
+...    { 加入日期: "2022-06-02", 身份: "校內生", 系所: "機械系", 年級: 4, 學號: "b06502055", 姓名: "小天" }
+... ])
+{
+	"acknowledged" : true,
+	"insertedIds" : [
+		ObjectId("628e75f10223b872c2feb195"),
+		ObjectId("628e75f10223b872c2feb196"),
+		ObjectId("628e75f10223b872c2feb197")
+	]
+}
+
+> db.student.find( { 姓名: { $in: [ "劉謦瑄","小花","小草","小天" ] } } )
+{ "_id" : ObjectId("628e6c2e85e685a715eec4ed"), "身份" : "校內生", "系所" : "資料科學學程", "年級" : 1, "學號" : "r10946013", "姓名" : "劉謦瑄", "加入日期" : "2022-03-01" }
+{ "_id" : ObjectId("628e75f10223b872c2feb195"), "加入日期" : "2022-06-02", "身份" : "旁聽生", "系所" : "歷史系", "年級" : 1, "學號" : "b09900201", "姓名" : "小花" }
+{ "_id" : ObjectId("628e75f10223b872c2feb196"), "加入日期" : "2022-06-02", "身份" : "校內生", "系所" : "歷史系", "年級" : 4, "學號" : "b06900332", "姓名" : "小草" }
+{ "_id" : ObjectId("628e75f10223b872c2feb197"), "加入日期" : "2022-06-02", "身份" : "校內生", "系所" : "機械系", "年級" : 4, "學號" : "b06502055", "姓名" : "小天" }
+> 
+
+
